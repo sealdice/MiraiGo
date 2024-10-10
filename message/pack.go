@@ -53,6 +53,20 @@ func (e *FaceElement) Pack() (r []*msg.Elem) {
 	return
 }
 
+func (e *VoiceElement) Pack() (r []*msg.Elem) {
+	common, err := proto.Marshal(e.MsgInfo)
+	if err != nil {
+		return nil
+	}
+	return []*msg.Elem{{
+		CommonElem: &msg.CommonElem{
+			ServiceType:  proto.Int32(48),
+			PbElem:       common,
+			BusinessType: proto.Int32(22),
+		},
+	}}
+}
+
 func (e *AtElement) Pack() (r []*msg.Elem) {
 	r = []*msg.Elem{}
 	switch e.SubType {
