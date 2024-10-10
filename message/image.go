@@ -2,38 +2,56 @@ package message
 
 import (
 	"fmt"
+	"io"
 
 	"github.com/sealdice/MiraiGo/client/pb/msg"
+	"github.com/sealdice/MiraiGo/client/pb/richmedia"
 	"github.com/sealdice/MiraiGo/internal/proto"
 )
 
 /* -------- Definitions -------- */
 
-type GroupImageElement struct {
+type FriendImageElement struct {
 	ImageId      string
-	FileId       int64
-	ImageType    int32
-	ImageBizType ImageBizType
+	FileUUID     string
 	Size         int32
 	Width        int32
 	Height       int32
-	Md5          []byte
 	Url          string
+	SubType      int32
+	EffectID     int32
+	Flash        bool
+	ImageType    int32
+	ImageBizType ImageBizType
 
-	// EffectID show pic effect id.
-	EffectID int32
-	Flash    bool
+	Summary     string
+	Md5         []byte
+	Sha1        []byte
+	MsgInfo     *richmedia.MsgInfo
+	Stream      io.ReadSeeker
+	CompatImage *msg.NotOnlineImage
 }
 
-type FriendImageElement struct {
-	ImageId string
-	Md5     []byte
-	Size    int32
-	Width   int32
-	Height  int32
-	Url     string
+type GroupImageElement struct {
+	ImageId      string
+	FileUUID     string
+	Size         int32
+	Width        int32
+	Height       int32
+	Url          string
+	SubType      int32
+	EffectID     int32
+	Flash        bool
+	ImageType    int32
+	ImageBizType ImageBizType
 
-	Flash bool
+	Summary    string
+	Md5        []byte
+	Sha1       []byte
+	MsgInfo    *richmedia.MsgInfo
+	Stream     io.ReadSeeker
+	FileId     int64
+	CompatFace *msg.CustomFace
 }
 
 type GuildImageElement struct {
@@ -76,6 +94,7 @@ func NewGroupImage(id string, md5 []byte, fid int64, size, width, height, imageT
 		Height:    height,
 		Url:       fmt.Sprintf("https://gchat.qpic.cn/gchatpic_new/1/0-0-%X/0?term=2", md5),
 	}
+
 }
 
 func (e *GroupImageElement) Type() ElementType {

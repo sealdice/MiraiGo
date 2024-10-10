@@ -9,6 +9,7 @@ import (
 
 	"github.com/sealdice/MiraiGo/binary"
 	"github.com/sealdice/MiraiGo/client/pb/msg"
+	"github.com/sealdice/MiraiGo/client/pb/richmedia"
 	"github.com/sealdice/MiraiGo/internal/proto"
 	"github.com/sealdice/MiraiGo/utils"
 )
@@ -671,36 +672,61 @@ func ParseMessageElems(elems []*msg.Elem) []IMessageElement {
 					Name: strings.TrimPrefix(string(animatedStickerMsg.Text), "/"),
 				}
 				return []IMessageElement{sticker} // sticker 永远为单独消息
-			case 48:
-				img := &msg.PbMultiMediaElement{}
-				_ = proto.Unmarshal(elem.CommonElem.PbElem, img)
-				domain := img.Elem1.Data.Domain.Unwrap()
-				imgURL := img.Elem1.Data.ImgURL.Unwrap()
-
-				if img.Elem2.Data.Friend != nil {
-					rKey := img.Elem2.Data.Friend.RKey.Unwrap()
-					url := fmt.Sprintf("https://%s%s%s&spec=0&rf=naio", domain, imgURL, rKey)
-					res = append(res, &FriendImageElement{
-						ImageId: img.Elem1.Meta.FilePath.Unwrap(),
-						Size:    img.Elem1.Meta.Data.FileLen.Unwrap(),
-						Url:     url,
-						Md5:     img.Elem1.Meta.Data.PicMd5,
-					})
-					newImg = true
-				}
-				if img.Elem2.Data.Group != nil {
-					rKey := img.Elem2.Data.Group.RKey.Unwrap()
-					url := fmt.Sprintf("https://%s%s%s&spec=0&rf=naio", domain, imgURL, rKey)
-					res = append(res, &GroupImageElement{
-						ImageId: img.Elem1.Meta.FilePath.Unwrap(),
-						Size:    img.Elem1.Meta.Data.FileLen.Unwrap(),
-						Url:     url,
-						Md5:     img.Elem1.Meta.Data.PicMd5,
-					})
-					newImg = true
-				}
 			}
-
+			bt := elem.CommonElem.BusinessType.Unwrap()
+			switch bt {
+			case 10:
+				extra := &richmedia.MsgInfo{}
+				err := proto.Unmarshal(elem.CommonElem.PbElem, extra)
+				if err != nil {
+					continue
+				}
+				index := extra.MsgInfoBody[0].Index
+				res = append(res, &FriendImageElement{
+					ImageId:  index.Info.FileName,
+					FileUUID: index.FileUuid,
+					SubType:  int32(extra.ExtBizInfo.Pic.BizType),
+					Summary:  utils.Ternary(extra.ExtBizInfo.Pic.TextSummary == "", "[图片]", extra.ExtBizInfo.Pic.TextSummary),
+					Md5:      utils.MustParseHexStr(index.Info.FileHash),
+					Sha1:     utils.MustParseHexStr(index.Info.FileSha1),
+					Width:    int32(index.Info.Width),
+					Height:   int32(index.Info.Height),
+					Size:     int32(index.Info.FileSize),
+					MsgInfo:  extra,
+				})
+			case 20:
+				extra := &richmedia.MsgInfo{}
+				err := proto.Unmarshal(elem.CommonElem.PbElem, extra)
+				if err != nil {
+					continue
+				}
+				index := extra.MsgInfoBody[0].Index
+				res = append(res, &GroupImageElement{
+					ImageId:  index.Info.FileName,
+					FileUUID: index.FileUuid,
+					SubType:  int32(extra.ExtBizInfo.Pic.BizType),
+					Summary:  utils.Ternary(extra.ExtBizInfo.Pic.TextSummary == "", "[图片]", extra.ExtBizInfo.Pic.TextSummary),
+					Md5:      utils.MustParseHexStr(index.Info.FileHash),
+					Sha1:     utils.MustParseHexStr(index.Info.FileSha1),
+					Width:    int32(index.Info.Width),
+					Height:   int32(index.Info.Height),
+					Size:     int32(index.Info.FileSize),
+					MsgInfo:  extra,
+				})
+			case 12, 22:
+				extra := &richmedia.MsgInfo{}
+				err := proto.Unmarshal(elem.CommonElem.PbElem, extra)
+				if err != nil {
+					continue
+				}
+				ve := &VoiceElement{
+					Name:   extra.MsgInfoBody[0].Index.Info.FileName,
+					Md5:    []byte(extra.MsgInfoBody[0].Index.Info.FileHash),
+					Size:   int32(extra.MsgInfoBody[0].Index.Info.FileSize),
+					FileId: extra.MsgInfoBody[0].Index.FileUuid,
+				}
+				res = append(res, ve)
+			}
 		}
 	}
 	return res

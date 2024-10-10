@@ -1,5 +1,7 @@
 package utils
 
+import "encoding/hex"
+
 func ToGroupUin(groupCode int64) int64 {
 	left := groupCode / 1000000
 	switch {
@@ -46,4 +48,19 @@ func ToGroupCode(groupUin int64) int64 {
 		left -= 3800 - 310
 	}
 	return left*1000000 + groupUin%1000000
+}
+
+func MustParseHexStr(s string) []byte {
+	result, err := hex.DecodeString(s)
+	if err != nil {
+		panic(err)
+	}
+	return result
+}
+
+func Ternary[T any](condition bool, trueValue, falseValue T) T {
+	if condition {
+		return trueValue
+	}
+	return falseValue
 }
