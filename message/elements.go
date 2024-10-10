@@ -1,11 +1,15 @@
 package message
 
 import (
+	"bytes"
 	"fmt"
 	"io"
+	"os"
 	"strconv"
 
 	"github.com/LagrangeDev/LagrangeGo/client/packets/pb/service/oidb"
+	"github.com/LagrangeDev/LagrangeGo/utils/audio"
+	"github.com/LagrangeDev/LagrangeGo/utils/crypto"
 	"github.com/sealdice/MiraiGo/client/pb/msg"
 )
 
@@ -288,4 +292,43 @@ func (e *RedBagElement) Type() ElementType {
 
 func (e *AnimatedSticker) Type() ElementType {
 	return Face
+}
+
+func NewRecord(data []byte, Summary ...string) *VoiceElement {
+	return NewStreamRecord(bytes.NewReader(data), Summary...)
+}
+
+func NewStreamRecord(r io.ReadSeeker, Summary ...string) *VoiceElement {
+	var summary string
+	if len(Summary) != 0 {
+		summary = Summary[0]
+	}
+	md5, sha1, length := crypto.ComputeMd5AndSha1AndLength(r)
+	info, err := audio.Decode(r)
+	if err != nil {
+		return &VoiceElement{
+			Size:     int32(length),
+			Summary:  summary,
+			Stream:   r,
+			Md5:      md5,
+			Sha1:     sha1,
+			Duration: uint32(length),
+		}
+	}
+	return &VoiceElement{
+		Size:     int32(length),
+		Summary:  summary,
+		Stream:   r,
+		Md5:      md5,
+		Sha1:     sha1,
+		Duration: uint32(info.Time),
+	}
+}
+
+func NewFileRecord(path string, Summary ...string) (*VoiceElement, error) {
+	voice, err := os.Open(path)
+	if err != nil {
+		return nil, err
+	}
+	return NewStreamRecord(voice, Summary...), nil
 }
