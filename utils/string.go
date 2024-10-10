@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"encoding/hex"
 	"math/rand"
 	"strconv"
 	"strings"
@@ -124,4 +125,12 @@ func XmlEscape(s string) string {
 	}
 	sb.WriteString(s[last:])
 	return sb.String()
+}
+
+func MustParseHexStr(s string) []byte {
+	result, err := hex.DecodeString(s)
+	if err != nil {
+		panic(err)
+	}
+	return result
 }

@@ -18,6 +18,7 @@ type TextElement struct {
 type VoiceElement struct {
 	Name   string
 	Md5    []byte
+	Sha1   []byte
 	Size   int32
 	Url    string
 	FileId string

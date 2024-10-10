@@ -14,6 +14,8 @@ import (
 	"github.com/sealdice/MiraiGo/internal/proto"
 )
 
+const BlockSize = 1024 * 1024
+
 type Transaction struct {
 	CommandID int32
 	Body      io.Reader
@@ -22,6 +24,7 @@ type Transaction struct {
 	Ticket    []byte
 	Ext       []byte
 	Encrypt   bool
+	LoginSig  []byte
 }
 
 func (bdh *Transaction) encrypt(key []byte) error {
