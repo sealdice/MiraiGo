@@ -17,6 +17,7 @@ import (
 
 	"github.com/sealdice/MiraiGo/binary"
 	"github.com/sealdice/MiraiGo/client/internal/auth"
+	"github.com/sealdice/MiraiGo/client/internal/cache"
 	"github.com/sealdice/MiraiGo/client/internal/highway"
 	"github.com/sealdice/MiraiGo/client/internal/intern"
 	"github.com/sealdice/MiraiGo/client/internal/network"
@@ -67,7 +68,7 @@ type QQClient struct {
 	currServerIndex int
 	retryTimes      int
 	alive           bool
-
+	cache           cache.Cache
 	// session info
 	qwebSeq        atomic.Int64
 	sig            *auth.SigInfo
