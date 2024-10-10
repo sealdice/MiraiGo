@@ -1,4 +1,4 @@
-module github.com/Mrs4s/MiraiGo
+module github.com/sealdice/MiraiGo
 
 go 1.20
 

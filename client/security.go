@@ -3,9 +3,9 @@ package client
 import (
 	"github.com/pkg/errors"
 
-	"github.com/Mrs4s/MiraiGo/client/internal/network"
-	"github.com/Mrs4s/MiraiGo/client/pb/oidb"
-	"github.com/Mrs4s/MiraiGo/internal/proto"
+	"github.com/sealdice/MiraiGo/client/internal/network"
+	"github.com/sealdice/MiraiGo/client/pb/oidb"
+	"github.com/sealdice/MiraiGo/internal/proto"
 )
 
 func init() {

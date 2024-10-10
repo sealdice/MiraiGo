@@ -7,13 +7,13 @@ import (
 
 	"github.com/pkg/errors"
 
-	"github.com/Mrs4s/MiraiGo/binary/jce"
-	"github.com/Mrs4s/MiraiGo/client/internal/network"
-	"github.com/Mrs4s/MiraiGo/client/pb/msf"
-	"github.com/Mrs4s/MiraiGo/client/pb/msg"
-	"github.com/Mrs4s/MiraiGo/client/pb/oidb"
-	"github.com/Mrs4s/MiraiGo/internal/proto"
-	"github.com/Mrs4s/MiraiGo/message"
+	"github.com/sealdice/MiraiGo/binary/jce"
+	"github.com/sealdice/MiraiGo/client/internal/network"
+	"github.com/sealdice/MiraiGo/client/pb/msf"
+	"github.com/sealdice/MiraiGo/client/pb/msg"
+	"github.com/sealdice/MiraiGo/client/pb/oidb"
+	"github.com/sealdice/MiraiGo/internal/proto"
+	"github.com/sealdice/MiraiGo/message"
 )
 
 func init() {

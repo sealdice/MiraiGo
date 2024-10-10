@@ -10,13 +10,13 @@ import (
 
 	"github.com/pkg/errors"
 
-	"github.com/Mrs4s/MiraiGo/binary"
-	"github.com/Mrs4s/MiraiGo/client/internal/network"
-	"github.com/Mrs4s/MiraiGo/client/pb/cmd0x3f6"
-	"github.com/Mrs4s/MiraiGo/client/pb/cmd0x6ff"
-	"github.com/Mrs4s/MiraiGo/client/pb/msg"
-	"github.com/Mrs4s/MiraiGo/internal/proto"
-	"github.com/Mrs4s/MiraiGo/utils"
+	"github.com/sealdice/MiraiGo/binary"
+	"github.com/sealdice/MiraiGo/client/internal/network"
+	"github.com/sealdice/MiraiGo/client/pb/cmd0x3f6"
+	"github.com/sealdice/MiraiGo/client/pb/cmd0x6ff"
+	"github.com/sealdice/MiraiGo/client/pb/msg"
+	"github.com/sealdice/MiraiGo/internal/proto"
+	"github.com/sealdice/MiraiGo/utils"
 )
 
 func init() {

@@ -5,10 +5,11 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/Mrs4s/MiraiGo/client/internal/tlv"
-	"github.com/Mrs4s/MiraiGo/utils"
+	"github.com/RomiChan/protobuf/proto"
+	"github.com/sealdice/MiraiGo/client/internal/tlv"
+	"github.com/sealdice/MiraiGo/utils"
 
-	"github.com/Mrs4s/MiraiGo/binary"
+	"github.com/sealdice/MiraiGo/binary"
 )
 
 // --- tlv decoders for qq client ---
@@ -127,6 +128,7 @@ func (c *QQClient) decodeT119(data, ek []byte) {
 	c.Nickname = nick
 	c.Age = age
 	c.Gender = gender
+	c.decodeT543(m[0x543])
 }
 
 // wtlogin.exchange_emp
@@ -155,6 +157,23 @@ func (c *QQClient) decodeT113(data []byte) {
 	reader := binary.NewReader(data)
 	uin := reader.ReadInt32() // ?
 	fmt.Println("got t113 uin:", uin)
+}
+
+func (c *QQClient) decodeT543(data []byte) {
+	tlv543 := struct {
+		Field9 *struct {
+			Field11 *struct {
+				Uid proto.Option[string] `protobuf:"bytes,1,opt"`
+			} `protobuf:"bytes,11,opt"`
+		} `protobuf:"bytes,9,opt"`
+	}{}
+	if len(data) != 0 {
+		if err := proto.Unmarshal(data, &tlv543); err != nil {
+			c.error("throw error when parsing tlv543: %v", err)
+			c.Uid = ""
+		}
+		c.Uid = tlv543.Field9.Field11.Uid.Unwrap()
+	}
 }
 
 /*
