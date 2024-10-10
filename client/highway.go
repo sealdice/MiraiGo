@@ -30,15 +30,12 @@ func (c *QQClient) ensureHighwayServers() error {
 				continue
 			}
 			for _, addr := range info.ServerAddrs {
-
-				fmt.Println(fmt.Sprintf("add highway server %s:%d", binary.UInt32ToIPV4Address(addr.IP), addr.Port))
+				c.debug(fmt.Sprintf("add highway server %s:%d", binary.UInt32ToIPV4Address(addr.IP), addr.Port))
 				c.highwaySession.AppendAddr(addr.IP, addr.Port)
 			}
 		}
 	}
 	if c.highwaySession.SsoAddr == nil || c.highwaySession.SigSession == nil || c.highwaySession.SessionKey == nil {
-		fmt.Println(c.highwaySession.SsoAddr)
-		fmt.Println("empty highway servers")
 		return errors.New("empty highway servers")
 	}
 	return nil
