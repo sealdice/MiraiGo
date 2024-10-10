@@ -85,6 +85,10 @@ func (c *QQClient) RecordUploadPrivate(targetUid string, recordRaw *message.Voic
 		if err != nil {
 			return nil, err
 		}
+		err = c.ensureHighwayServers()
+		if err != nil {
+			return nil, err
+		}
 		input := highway2.Transaction{
 			CommandID: 1007,
 			Body:      record.Stream,
@@ -153,6 +157,10 @@ func (c *QQClient) RecordUploadGroup(groupUin uint32, recordRaw *message.VoiceEl
 			return nil, err
 		}
 		hash, err := hex.DecodeString(index.Info.FileHash)
+		if err != nil {
+			return nil, err
+		}
+		err = c.ensureHighwayServers()
 		if err != nil {
 			return nil, err
 		}
