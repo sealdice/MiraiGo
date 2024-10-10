@@ -7,9 +7,9 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/LagrangeDev/LagrangeGo/client/packets/pb/service/oidb"
 	"github.com/sealdice/MiraiGo/binary"
 	"github.com/sealdice/MiraiGo/client/pb/msg"
-	"github.com/sealdice/MiraiGo/client/pb/richmedia"
 	"github.com/sealdice/MiraiGo/internal/proto"
 	"github.com/sealdice/MiraiGo/utils"
 )
@@ -676,7 +676,7 @@ func ParseMessageElems(elems []*msg.Elem) []IMessageElement {
 			bt := elem.CommonElem.BusinessType.Unwrap()
 			switch bt {
 			case 10:
-				extra := &richmedia.MsgInfo{}
+				extra := &oidb.MsgInfo{}
 				err := proto.Unmarshal(elem.CommonElem.PbElem, extra)
 				if err != nil {
 					continue
@@ -695,7 +695,7 @@ func ParseMessageElems(elems []*msg.Elem) []IMessageElement {
 					MsgInfo:  extra,
 				})
 			case 20:
-				extra := &richmedia.MsgInfo{}
+				extra := &oidb.MsgInfo{}
 				err := proto.Unmarshal(elem.CommonElem.PbElem, extra)
 				if err != nil {
 					continue
@@ -714,7 +714,7 @@ func ParseMessageElems(elems []*msg.Elem) []IMessageElement {
 					MsgInfo:  extra,
 				})
 			case 12, 22:
-				extra := &richmedia.MsgInfo{}
+				extra := &oidb.MsgInfo{}
 				err := proto.Unmarshal(elem.CommonElem.PbElem, extra)
 				if err != nil {
 					continue
@@ -724,6 +724,7 @@ func ParseMessageElems(elems []*msg.Elem) []IMessageElement {
 					Md5:    []byte(extra.MsgInfoBody[0].Index.Info.FileHash),
 					Size:   int32(extra.MsgInfoBody[0].Index.Info.FileSize),
 					FileId: extra.MsgInfoBody[0].Index.FileUuid,
+					Node:   extra.MsgInfoBody[0].Index,
 				}
 				res = append(res, ve)
 			}

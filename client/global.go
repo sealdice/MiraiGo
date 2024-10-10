@@ -211,6 +211,7 @@ func (c *QQClient) parsePrivateMessage(msg *msg.Message) *message.PrivateMessage
 	if msg.Body.RichText.Attr != nil {
 		ret.InternalId = msg.Body.RichText.Attr.Random.Unwrap()
 	}
+	c.furtherParsePrivateMessage(ret)
 	return ret
 }
 
@@ -358,4 +359,23 @@ func unpackOIDBPackage(payload []byte, rsp proto.Message) error {
 		return errors.Wrap(err, "failed to unmarshal protobuf message")
 	}
 	return nil
+}
+
+func (c *QQClient) furtherParsePrivateMessage(pm *message.PrivateMessage) {
+	for _, elem := range pm.Elements {
+		switch e := elem.(type) {
+		case *message.VoiceElement:
+			url, err := c.GetPrivateRecordUrl(e.Node)
+			if err != nil {
+				continue
+			}
+			e.Url = url
+		case *message.FriendImageElement:
+			if e.Url != "" {
+				continue
+			}
+			url, _ := c.GetPrivateImageUrl(e.MsgInfo.MsgInfoBody[0].Index)
+			e.Url = url
+		}
+	}
 }

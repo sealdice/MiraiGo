@@ -2,8 +2,10 @@ package message
 
 import (
 	"fmt"
+	"io"
 	"strconv"
 
+	"github.com/LagrangeDev/LagrangeGo/client/packets/pb/service/oidb"
 	"github.com/sealdice/MiraiGo/client/pb/msg"
 )
 
@@ -19,9 +21,15 @@ type VoiceElement struct {
 	Size   int32
 	Url    string
 	FileId string
+	Node   *oidb.IndexNode
 
 	// --- sending ---
-	Data []byte
+	Data     []byte
+	MsgInfo  *oidb.MsgInfo
+	Compat   []byte
+	Duration uint32
+	Stream   io.ReadSeeker
+	Summary  string
 }
 
 type GroupVoiceElement struct {

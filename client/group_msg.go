@@ -508,7 +508,27 @@ func (c *QQClient) parseGroupMessage(m *msg.Message) *message.GroupMessage {
 	if m.Body.RichText.Attr != nil {
 		g.InternalId = m.Body.RichText.Attr.Random.Unwrap()
 	}
+	c.furtherParseGroupMessage(g)
 	return g
+}
+
+func (c *QQClient) furtherParseGroupMessage(gm *message.GroupMessage) {
+	for _, elem := range gm.Elements {
+		switch e := elem.(type) {
+		case *message.VoiceElement:
+			url, err := c.GetGroupRecordUrl(uint32(gm.GroupCode), e.Node)
+			if err != nil {
+				continue
+			}
+			e.Url = url
+		case *message.GroupImageElement:
+			if e.Url != "" {
+				continue
+			}
+			url, _ := c.GetGroupImageUrl(uint32(gm.GroupCode), e.MsgInfo.MsgInfoBody[0].Index)
+			e.Url = url
+		}
+	}
 }
 
 // SetEssenceMessage 设为群精华消息

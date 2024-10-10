@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"io"
 
+	"github.com/LagrangeDev/LagrangeGo/client/packets/pb/service/oidb"
 	"github.com/sealdice/MiraiGo/client/pb/msg"
-	"github.com/sealdice/MiraiGo/client/pb/richmedia"
 	"github.com/sealdice/MiraiGo/internal/proto"
 )
 
@@ -27,7 +27,7 @@ type FriendImageElement struct {
 	Summary     string
 	Md5         []byte
 	Sha1        []byte
-	MsgInfo     *richmedia.MsgInfo
+	MsgInfo     *oidb.MsgInfo
 	Stream      io.ReadSeeker
 	CompatImage *msg.NotOnlineImage
 }
@@ -48,7 +48,7 @@ type GroupImageElement struct {
 	Summary    string
 	Md5        []byte
 	Sha1       []byte
-	MsgInfo    *richmedia.MsgInfo
+	MsgInfo    *oidb.MsgInfo
 	Stream     io.ReadSeeker
 	FileId     int64
 	CompatFace *msg.CustomFace
