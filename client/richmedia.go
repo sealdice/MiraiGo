@@ -2,7 +2,6 @@ package client
 
 import (
 	"encoding/hex"
-	"fmt"
 
 	"github.com/LagrangeDev/LagrangeGo/client/packets/oidb"
 	"github.com/LagrangeDev/LagrangeGo/client/packets/pb/service/highway"
@@ -58,7 +57,7 @@ func (c *QQClient) RecordUploadPrivate(targetUid string, recordRaw *message.Voic
 		return nil, err
 	}
 	ukey := uploadResp.Upload.UKey.Unwrap()
-	fmt.Println("private record upload ukey:", ukey)
+	c.debug("private record upload ukey:", ukey)
 	if ukey != "" {
 		index := uploadResp.Upload.MsgInfo.MsgInfoBody[0].Index
 		sha1, err := hex.DecodeString(index.Info.FileSha1)
