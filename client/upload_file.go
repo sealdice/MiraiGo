@@ -135,6 +135,10 @@ func (c *QQClient) UploadFile(target message.Source, file *LocalFile) error {
 				},
 			}
 		}
+		err = c.ensureHighwayServers()
+		if err != nil {
+			return err
+		}
 		extPkt, _ := proto.Marshal(ext)
 		input := highway.Transaction{
 			CommandID: 71,

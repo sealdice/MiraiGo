@@ -306,6 +306,10 @@ func (builder *ForwardMessageBuilder) Main(m *message.ForwardMessage) *message.F
 	}
 	content := forwardDisplay(rsp.MsgResid, utils.RandomString(32), m.Preview(), fmt.Sprintf("查看 %d 条转发消息", m.Length()))
 	bodyHash := md5.Sum(body)
+	err = c.ensureHighwayServers()
+	if err != nil {
+		return nil
+	}
 	input := highway.Transaction{
 		CommandID: 27,
 		Ticket:    rsp.MsgSig,
