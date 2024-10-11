@@ -176,20 +176,35 @@ func (c *QQClient) RefreshAllRkeyInfoCache() error {
 // GetFriendsData 获取好友列表数据
 func (c *QQClient) GetFriendsData() (map[uint32]*entity.Friend, error) {
 	friendsData := make(map[uint32]*entity.Friend)
-	friends, token, err := c.FetchFriends(0)
+	// friends, token, err := c.FetchFriends(0)
+	// if err != nil {
+	// 	return friendsData, err
+	// }
+	// for _, friend := range friends {
+	// 	friendsData[friend.Uin] = friend
+	// }
+	// for token != 0 {
+	// 	friends, token, err = c.FetchFriends(token)
+	// 	if err != nil {
+	// 		return friendsData, err
+	// 	}
+	// 	for _, friend := range friends {
+	// 		friendsData[friend.Uin] = friend
+	// 	}
+	// }
+	rsp, err := c.GetFriendList()
 	if err != nil {
+		c.warning("获取好友UID失败")
 		return friendsData, err
 	}
-	for _, friend := range friends {
-		friendsData[friend.Uin] = friend
-	}
-	for token != 0 {
-		friends, token, err = c.FetchFriends(token)
-		if err != nil {
-			return friendsData, err
-		}
-		for _, friend := range friends {
-			friendsData[friend.Uin] = friend
+	for _, fi := range rsp.List {
+		friendsData[uint32(fi.Uin)] = &entity.Friend{
+			Uin:          uint32(fi.Uin),
+			Uid:          fi.Uid,
+			Nickname:     fi.Nickname,
+			Remarks:      fi.Remark,
+			PersonalSign: "",
+			Avatar:       "",
 		}
 	}
 	c.debug("获取%d个好友", len(friendsData))

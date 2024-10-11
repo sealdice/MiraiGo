@@ -51,9 +51,13 @@ message D50ReqBody {
   repeated int64 uinList = 6;
   int32 reqMusicSwitch = 91001;
   int32 reqMutualmarkAlienation = 101001;
-  int32 reqMutualmarkScore = 141001;
-  int32 reqKsingSwitch = 151001;
-  int32 reqMutualmarkLbsshare = 181001;
+  int32 reqMutualmarkScore = 151001;
+  int32 reqKsingSwitch = 181001;
+  int32 reqMutualmarkLbsshare = 251001;
+}
+
+message D6BReqBody {
+  string field1 = 1;
 }
 
 message ReqDataHighwayHead {
@@ -61,7 +65,7 @@ message ReqDataHighwayHead {
   SegHead msgSeghead = 2;
   bytes reqExtendinfo = 3;
   int64 timestamp = 4;
-  //LoginSigHead? msgLoginSigHead = 5;
+  // LoginSigHead? msgLoginSigHead = 5;
 }
 
 message RspDataHighwayHead {
@@ -222,8 +226,8 @@ message GroupMemberInfo {
   bytes lev = 13;
   int64 join = 14;
   int64 lastSpeak = 15;
-  //repeated CustomEntry customEnties = 16;
-  //repeated GBarInfo gbarConcerned = 17;
+  // repeated CustomEntry customEnties = 16;
+  // repeated GBarInfo gbarConcerned = 17;
   bytes gbarTitle = 18;
   bytes gbarUrl = 19;
   int32 gbarCnt = 20;
@@ -239,8 +243,8 @@ message GroupMemberInfo {
   int32 concernType = 30;
   bytes specialTitle = 31;
   int32 specialTitleExpireTime = 32;
-  //FlowersEntry flowerEntry = 33;
-  //TeamEntry teamEntry = 34;
+  // FlowersEntry flowerEntry = 33;
+  // TeamEntry teamEntry = 34;
   bytes phoneNum = 35;
   bytes job = 36;
   int32 medalId = 37;
@@ -249,4 +253,3 @@ message GroupMemberInfo {
 
   string honor = 41;
 }
-

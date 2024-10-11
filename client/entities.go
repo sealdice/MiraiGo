@@ -64,6 +64,7 @@ type (
 		Nickname string
 		Remark   string
 		FaceId   int16
+		Uid      string
 		// msgSeqList *utils.Cache
 	}
 

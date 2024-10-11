@@ -679,11 +679,15 @@ func (c *QQClient) buildConfPushRespPacket(t int32, pktSeq int64, jceBuf []byte)
 // friendlist.getFriendGroupList
 func (c *QQClient) buildFriendGroupListRequestPacket(friendStartIndex, friendListCount, groupStartIndex, groupListCount int16) (uint16, []byte) {
 	d50, _ := proto.Marshal(&pb.D50ReqBody{
-		Appid:                   1002,
+		Appid:                   10002,
 		ReqMusicSwitch:          1,
 		ReqMutualmarkAlienation: 1,
+		ReqMutualmarkScore:      1,
 		ReqKsingSwitch:          1,
 		ReqMutualmarkLbsshare:   1,
+	})
+	d6B, _ := proto.Marshal(&pb.D6BReqBody{
+		Field1: "1",
 	})
 	req := &jce.FriendListRequest{
 		Reqtype: 3,
@@ -707,13 +711,13 @@ func (c *QQClient) buildFriendGroupListRequestPacket(friendStartIndex, friendLis
 		GroupCount:      byte(groupListCount),
 		IfGetMSFGroup:   0,
 		IfShowTermType:  1,
-		Version:         27,
+		Version:         41,
 		UinList:         nil,
 		AppType:         0,
 		IfGetDOVId:      0,
 		IfGetBothFlag:   0,
 		D50:             d50,
-		D6B:             EmptyBytes,
+		D6B:             d6B,
 		SnsTypeList:     []int64{13580, 13581, 13582},
 	}
 	buf := &jce.RequestDataVersion3{

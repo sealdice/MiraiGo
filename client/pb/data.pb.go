@@ -54,9 +54,13 @@ type D50ReqBody struct {
 	UinList                 []int64 `protobuf:"varint,6,rep"`
 	ReqMusicSwitch          int32   `protobuf:"varint,91001,opt"`
 	ReqMutualmarkAlienation int32   `protobuf:"varint,101001,opt"`
-	ReqMutualmarkScore      int32   `protobuf:"varint,141001,opt"`
-	ReqKsingSwitch          int32   `protobuf:"varint,151001,opt"`
-	ReqMutualmarkLbsshare   int32   `protobuf:"varint,181001,opt"`
+	ReqMutualmarkScore      int32   `protobuf:"varint,151001,opt"`
+	ReqKsingSwitch          int32   `protobuf:"varint,181001,opt"`
+	ReqMutualmarkLbsshare   int32   `protobuf:"varint,251001,opt"`
+}
+
+type D6BReqBody struct {
+	Field1                   string   `protobuf:"bytes,1,opt"`
 }
 
 type ReqDataHighwayHead struct {

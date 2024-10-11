@@ -521,6 +521,7 @@ func decodeFriendGroupListResponse(_ *QQClient, pkt *network.Packet) (any, error
 			Nickname: f.Nick,
 			Remark:   f.Remark,
 			FaceId:   f.FaceId,
+			Uid:      f.Uid,
 		})
 	}
 	rsp := &FriendListResponse{

@@ -374,6 +374,7 @@ type (
 		NewLoverDiamondFlag byte   `jceId:"54"`
 		ExtSnsFrdData       []byte `jceId:"55"`
 		MutualMarkData      []byte `jceId:"56"`
+		Uid                 string `jceId:"63"`
 	}
 
 	TroopListRequest struct {
@@ -635,6 +636,7 @@ func (pkt *FriendInfo) ReadFrom(r *JceReader) {
 	pkt.Network = r.ReadByte(20)
 	pkt.NetworkType = r.ReadInt32(24)
 	pkt.CardID = r.ReadBytes(41)
+	pkt.Uid = r.ReadString(63)
 }
 
 func (pkt *TroopNumber) ReadFrom(r *JceReader) {
