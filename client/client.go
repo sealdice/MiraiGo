@@ -818,6 +818,17 @@ func (c *QQClient) doHeartbeat() {
 		times++
 		if times >= 7 {
 			_ = c.registerClient()
+			startTime := time.Now().UnixMilli()
+			_, err := c.sendAndWait(c.uniPacket("trpc.qq_new_tech.status_svc.StatusService.SsoHeartBeat", []byte{0x08, 0x01}))
+			if errors.Is(err, network.ErrConnectionClosed) {
+				continue
+			}
+			if err != nil {
+				c.error("heartbeat err %s", err)
+			} else {
+				c.debug("heartbeat %dms to server", time.Now().UnixMilli()-startTime)
+				//TODO: times
+			}
 			times = 0
 		}
 	}
