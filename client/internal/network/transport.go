@@ -101,7 +101,6 @@ trpc.qlive.relationchain_svr.RelationchainSvr.Follow
 trpc.qlive.word_svr.WordSvr.NewPublicChat
 trpc.qqhb.qqhb_proxy.Handler.sso_handle
 trpc.springfestival.redpacket.LuckyBag.SsoSubmitGrade
-trpc.qq_new_tech.status_svc.StatusService.SsoHeartBeat
 wtlogin.device_lock
 wtlogin.exchange_emp
 wtlogin.login
